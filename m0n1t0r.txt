@@ -42,7 +42,18 @@ docker run \
 
 Create API Token
 
+cd grafana
+python3 restore_datasources.py [grafana_host] [token]
 python3 restore_dashboards.py [grafana_host] [token]
 
 
+[ python3 backup_datasources.py [grafana_host] [token] ]
 [ python3 backup_dashboards.py [grafana_host] [token] ]
+
+
+================
+ docker-compose
+================
+
+docker-compose up -d
+docker-compose down

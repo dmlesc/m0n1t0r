@@ -5,7 +5,7 @@ import json
 
 grafana_host = sys.argv[1]
 token = sys.argv[2]
-dashboards_path = './dashboards/'
+datasources_path = './datasources/'
 
 url_base = 'http://' + grafana_host + ':3000/api/'
 
@@ -25,60 +25,58 @@ def make_request(req):
     # print('error:', e.code, '-', e.msg)
     return e
 
-def delete_dashboard(uid):
-  print('delete_dashboard')
+def delete_datasource(name):
+  print('delete_datasources')
 
-  query = 'dashboards/uid/' + uid
+  query = 'datasources/name/' + name
   req = urllib.request.Request(url_base + query, headers=headers, method='DELETE')
 
   return make_request(req)
 
-def create_update_dashboard(data):
-  print('create_update_dashboard')
+def create_update_datasource(data):
+  print('create_update_datasource')
 
-  query = 'dashboards/db'
+  query = 'datasources'
   data = json.dumps(data).encode('utf-8')
   req = urllib.request.Request(url_base + query, data=data, headers=headers)
 
   return make_request(req)
 
 
-dashboard_files = os.listdir(dashboards_path)
-# print(dashboard_files)
+datasource_files = os.listdir(datasources_path)
+print(datasource_files)
 
-for file in dashboard_files:
-  with open(dashboards_path + file, 'r') as f:
+for file in datasource_files:
+  with open(datasources_path + file, 'r') as f:
     data = json.load(f)
   
   # print(json.dumps(data, indent=2))
   
-  uid = data['dashboard']['uid']
-  result = delete_dashboard(uid)
+  name = data['name']
+  result = delete_datasource(name)
   print(' ', result)
 
-  title = data['dashboard']['title']
+  # create_data = {
+  #   'dashboard': {
+  #     'id': None,
+  #     'uid': uid,
+  #     'title': title,
+  #     'timezone': 'browser',
+  #     'schemaVersion': 16,
+  #     'version': 0
+  #   },
+  #   'folderId': 0,
+  #   'overwrite': True
+  # }
 
-  create_data = {
-    'dashboard': {
-      'id': None,
-      'uid': uid,
-      'title': title,
-      'timezone': 'browser',
-      'schemaVersion': 16,
-      'version': 0
-    },
-    'folderId': 0,
-    'overwrite': True
-  }
-
-  result = create_update_dashboard(create_data)
+  result = create_update_datasource(data)
   print(' ', result)
 
-  data['dashboard']['id'] = result['id']
-  data['overwrite'] = True
+  # data['dashboard']['id'] = result['id']
+  # data['overwrite'] = True
 
-  result = create_update_dashboard(data)
-  print(' ', result)
+  # result = create_update_datasource(data)
+  # print(' ', result)
 
 
 print('\n=== done ===')
