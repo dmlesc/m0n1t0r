@@ -18,9 +18,11 @@ dashboard_list = [
   'cpu_frequency',
   'disk',
   'filesystem',
+  'grafana',
   'memory',
   'network',
   'overview',
+  'prometheus',
   'zfs'
 ]
 
