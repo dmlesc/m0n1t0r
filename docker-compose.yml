@@ -15,8 +15,7 @@ services:
     command:
       - '--storage.tsdb.retention=365d'
     extra_hosts:
-      - "grafana:172.22.0.1"
-    #   - "esc0:10.0.0.11"
+      - "esc:10.92.124.1"
 
   grafana:
     container_name: grafana
